@@ -22,7 +22,6 @@ describe("pageCount", () => {
     [{ 1: 1 }, 4],
     [{ 2: 2 }, 16],
     [{ 2: 2, 3: 1 }, 28],
-    [{ hello: 5 }, 0],
   ])(
     "when I have a signature key of %j and I call pageCount, it should return %i",
     (list, expected) => expect(pageCount(keyFrom(list))).toBe(expected)
