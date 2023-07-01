@@ -1,0 +1,76 @@
+openapi: 3.0.0
+info:
+  title: BookSiginatureFinderService
+  description: An API to generate all possible sets of signatures for the given range
+  version: 1.0.0
+
+servers:
+  - url: http://localhost:8080
+    description: localhost
+
+paths:
+  /json:
+    get:
+      summary: Retrieve signature set for the target range
+      description: For the given allowed values and range will produce all the available signature sets that produce a book with pages within that range
+      parameters:
+        - name: sizes
+          in: query
+          description: list of allowed signature sizes
+          required: true
+          schema:
+            type: array
+            items:
+              type: integer
+              format: int64
+            minItems: 1
+        - name: min
+          in: query
+          description: minimum pages for book
+          required: true
+          schema:
+            type: integer
+            format: int64
+            minimum: 4
+        - name: max
+          in: query
+          description: maximum pages for book
+          required: true
+          schema:
+            type: integer
+            format: int64
+        - name: format
+          in: query
+          description: the desired format of the signature set, options are json and string
+          required: true
+          schema:
+            type: string
+            enum:
+              - json
+              - string
+        - name: pages
+          in: query
+          description: flag to set if pages should be included in the format
+          required: true
+          schema:
+            type: boolean
+            default: true
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SignatureJsonSets'
+        '400':
+          description: BAD REQUEST
+components:
+  schemas:
+    SignatureJsonSets:
+      type: array
+      items:
+        type: object
+        properties:
+          set:
+            
+      minItems: 0
