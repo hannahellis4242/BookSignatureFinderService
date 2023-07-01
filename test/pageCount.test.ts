@@ -1,8 +1,7 @@
 import pageCount from "../src/solver/pageCount";
 import SignatureKey from "../src/solver/SignatureKey";
-interface SignatureObject {
-  [key: number]: number;
-}
+import SignatureObject from "../src/solver/SignatureObject";
+
 const keyFrom = (obj: SignatureObject): SignatureKey =>
   Object.entries(obj)
     .map(([k, v]) => [Number.parseInt(k), v])

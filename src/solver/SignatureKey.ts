@@ -13,3 +13,13 @@ export const addSignatures = (
   out.set(key, getOr(out.get(key), 0) + n);
   return out;
 };
+
+const byKey = ([a, _]: [number, number], [b, __]: [number, number]): number => {
+  return b - a;
+};
+
+export const toString = (signatureKey: SignatureKey): string =>
+  Array.from(signatureKey.entries())
+    .sort(byKey)
+    .map(([k, v]) => `${k}:${v}`)
+    .join(",");
