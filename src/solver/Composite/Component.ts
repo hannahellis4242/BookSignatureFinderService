@@ -1,5 +1,5 @@
-import SignatureKey from "./SignatureKey";
-import Visitor from "./Visitors/Visitor";
+import SignatureKey from "../SignatureKey";
+import Visitor from "../Visitors/Visitor";
 
 export default interface Component {
   value: SignatureKey;

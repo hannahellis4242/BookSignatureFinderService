@@ -1,7 +1,7 @@
-import Component from "./Component";
-import { toString } from "./SignatureKey";
-import SignatureObject from "./SignatureObject";
-import Visitor from "./Visitors/Visitor";
+import Component from "../Composite/Component";
+import { toString } from "../SignatureKey";
+import SignatureObject from "../SignatureObject";
+import Visitor from "./Visitor";
 
 interface Output {
   pages: number;

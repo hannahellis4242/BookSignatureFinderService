@@ -1,9 +1,9 @@
+import Problem from "../Problem";
+import SignatureKey, { addSignatures } from "../SignatureKey";
+import Visitor from "../Visitors/Visitor";
+import pageCount from "../pageCount";
 import Component from "./Component";
 import ComponentCache from "./ComponentCache";
-import Problem from "./Problem";
-import SignatureKey, { addSignatures } from "./SignatureKey";
-import Visitor from "./Visitors/Visitor";
-import pageCount from "./pageCount";
 
 export default class Composite implements Component {
   children: Component[];

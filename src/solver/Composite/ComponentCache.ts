@@ -1,8 +1,8 @@
 import Component from "./Component";
 import Composite from "./Composite";
-import Problem from "./Problem";
-import SignatureKey, { toString } from "./SignatureKey";
-import pageCount from "./pageCount";
+import Problem from "../Problem";
+import SignatureKey, { toString } from "../SignatureKey";
+import pageCount from "../pageCount";
 
 export default class ComponentCache {
   data: Map<string, Component>;

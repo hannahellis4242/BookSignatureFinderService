@@ -1,4 +1,4 @@
-import Component from "../Component";
+import Component from "../Composite/Component";
 import Visitor from "./Visitor";
 import graphviz, { Graph } from "graphviz";
 import { toString } from "../SignatureKey";
