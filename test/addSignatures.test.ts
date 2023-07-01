@@ -1,15 +1,4 @@
-import SignatureKey, { EmptySignatureKey } from "../src/solver/SignatureKey";
-import getOr from "../src/utils/getOr";
-
-const addSignatures = (
-  signatureKey: SignatureKey,
-  key: number,
-  n: number
-): SignatureKey => {
-  const out = new Map(signatureKey);
-  out.set(key, getOr(out.get(key), 0) + n);
-  return out;
-};
+import { EmptySignatureKey, addSignatures } from "../src/solver/SignatureKey";
 
 describe("addSignatures", () => {
   test("empty", () => {
