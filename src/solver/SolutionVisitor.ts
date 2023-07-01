@@ -1,6 +1,6 @@
 import Component from "./Component";
 import Problem from "./Problem";
-import Visitor from "./Visitor";
+import Visitor from "./Visitors/Visitor";
 
 export default class SolutionVisitor implements Visitor<void> {
   solutions: Component[];

@@ -1,15 +1,20 @@
 import Problem from "../src/solver/Problem";
-import Composite from "../src/solver/Composite";
 import { EmptySignatureKey } from "../src/solver/SignatureKey";
 import SolutionVisitor from "../src/solver/SolutionVisitor";
-
-const root = (problem: Problem) =>
-  new Composite(problem, EmptySignatureKey(), 0);
+import { OutputStringVisitor } from "../src/solver/OutputVisitor";
+//import GraphVisitor from "../src/solver/Visitors/GraphVisitor";
+import ComponentCache from "../src/solver/ComponentCache";
 
 const solve = (problem: Problem) => {
-  const tree = root(problem);
+  const cache = new ComponentCache(problem);
+  cache.get(EmptySignatureKey()); //kicks off tree construction
+  /*{
+    const graphVisitor = new GraphVisitor();
+    Array.from(cache.data.values()).forEach((v) => v.visit(graphVisitor));
+    console.log(graphVisitor.toDot());
+  }*/
   const solutonVisitor = new SolutionVisitor(problem);
-  tree.visitRecursive(solutonVisitor);
+  Array.from(cache.data.values()).forEach((v) => v.visit(solutonVisitor));
   return solutonVisitor.getSolutions();
 };
 
@@ -23,5 +28,14 @@ describe("solve", () => {
     const problem: Problem = { allowed: [1], range: { min: 1, max: 6 } };
     const results = solve(problem);
     expect(results).toHaveLength(1);
+  });
+  test("test problem", () => {
+    const problem: Problem = {
+      allowed: [3, 4, 5],
+      range: { min: 100, max: 102 },
+    };
+    const visitor = new OutputStringVisitor();
+    const results = solve(problem).map((x) => x.visit(visitor));
+    expect(results).toHaveLength(8);
   });
 });

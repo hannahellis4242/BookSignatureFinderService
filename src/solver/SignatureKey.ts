@@ -14,7 +14,12 @@ export const addSignatures = (
   return out;
 };
 
+const byKey = ([a, _]: [number, number], [b, __]: [number, number]): number => {
+  return b - a;
+};
+
 export const toString = (signatureKey: SignatureKey): string =>
   Array.from(signatureKey.entries())
-    .map(([k, v]) => `k:v`)
+    .sort(byKey)
+    .map(([k, v]) => `${k}:${v}`)
     .join(",");
