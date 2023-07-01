@@ -1,9 +1,5 @@
-type SignatureKey = Map<number, number>;
-const pageCount = (key: SignatureKey) =>
-  Array.from(key.entries())
-    .map(([k, v]) => 4 * k * v)
-    .reduce((a, b) => a + b, 0);
-
+import pageCount from "../src/solver/pageCount";
+import SignatureKey from "../src/solver/SignatureKey";
 interface SignatureObject {
   [key: number]: number;
 }
