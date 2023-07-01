@@ -13,3 +13,8 @@ export const addSignatures = (
   out.set(key, getOr(out.get(key), 0) + n);
   return out;
 };
+
+export const toString = (signatureKey: SignatureKey): string =>
+  Array.from(signatureKey.entries())
+    .map(([k, v]) => `k:v`)
+    .join(",");
