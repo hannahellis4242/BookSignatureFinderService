@@ -21,6 +21,9 @@ const createProblem = (req: Request): Either<string, Problem> => {
   if (minValue < 4) {
     return left("minimum must be greater than 3");
   }
+  if (maxValue < minValue) {
+    return left("maxmum must be greater than or equal to the minimum");
+  }
   const { sizes } = req.query;
   if (!sizes) {
     return left("no sizes query parameter");
