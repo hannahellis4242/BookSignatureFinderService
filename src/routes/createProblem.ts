@@ -4,7 +4,7 @@ import Problem from "../solver/Problem";
 
 const left = <L, R>(x: L) => new Either<L, R>(x, undefined);
 const right = <L, R>(x: R) => new Either<L, R>(undefined, x);
-const pattern: RegExp = /^\s*\[(?:\s*\d+\s*,?\s*)+]\s*$/;
+const pattern: RegExp = /^\s*\[(?:\s*\d+\s*,?\s*)+\]\s*$/;
 
 const createProblem = (req: Request): Either<string, Problem> => {
   const { min, max } = req.params;
@@ -28,10 +28,7 @@ const createProblem = (req: Request): Either<string, Problem> => {
   if (!sizes) {
     return left("no sizes query parameter");
   }
-
-  const input: string = "[1, 2, 3]";
-
-  if (pattern.test(sizes.toString())) {
+  if (!pattern.test(sizes.toString())) {
     return left("sizes must be an array of integers with at least one item");
   }
   const array: number[] = JSON.parse(sizes.toString());

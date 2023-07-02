@@ -19,7 +19,7 @@ const handleSolutionRequest =
       left: (x) => ({ allowed: [], range: { min: 0, max: 0 } }),
       right: (x) => x,
     });
-    const solveProblem = solve(problem);
-    res.json(solveProblem(config));
+    const solutions = solve(problem)(config);
+    res.json(solutions);
   };
 export default handleSolutionRequest;

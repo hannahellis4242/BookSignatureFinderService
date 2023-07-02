@@ -1,8 +1,10 @@
 import express, { json } from "express";
 import jsonRoutes from "./routes/jsonRoutes";
 import stringRoutes from "./routes/stringRoutes";
+import morgan from "morgan";
 
 const app = express();
+app.use(morgan("combined"));
 app.use(json());
 
 app.use("/json", jsonRoutes);
