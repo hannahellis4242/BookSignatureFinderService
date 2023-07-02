@@ -1,15 +1,9 @@
 import Component from "../Composite/Component";
 import OutputSignatureList from "../Output/OutputSignatureList";
+import OutputConfig from "../OutputConfig";
 import SignatureKey, { toString } from "../SignatureKey";
 import pageCount from "../pageCount";
 import Visitor from "./Visitor";
-
-type SignatureOutputFormat = "json" | "string";
-
-export interface OutputConfig {
-  format: SignatureOutputFormat;
-  includePageCount: boolean;
-}
 
 const createSignatureString = (
   sk: SignatureKey,
