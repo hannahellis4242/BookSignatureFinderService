@@ -9,7 +9,7 @@ servers:
     description: localhost
 
 paths:
-  /list/{minPages}/{maxPages}:
+  /json/{minPages}/{maxPages}:
     get:
       summary: Retrieve signature set for the target range in json format not including page counts
       description: For the given allowed values and range will produce all the available signature sets that produce a book with pages within that range as a list of json objects not including page numbers
@@ -48,7 +48,11 @@ paths:
                 $ref: '#/components/schemas/SignatureListSolution'
         '400':
           description: BAD REQUEST
-  /list/pages/{minPages}/{maxPages}:
+          content:
+            text/plain:
+              schema:
+                type: string
+  /json/pages/{minPages}/{maxPages}:
     get:
       summary: Retrieve signature set for the target range in json format including page counts
       description: For the given allowed values and range will produce all the available signature sets that produce a book with pages within that range as a list of json objects including page numbers
@@ -87,7 +91,11 @@ paths:
                 $ref: '#/components/schemas/SignatureListSolution'
         '400':
           description: BAD REQUEST
-  /{minPages}/{maxPages}:
+          content:
+            text/plain:
+              schema:
+                type: string
+  /string/{minPages}/{maxPages}:
     get:
       summary: Retrieve signature set for the target range in string format not including page counts
       description: For the given allowed values and range will produce all the available signature sets that produce a book with pages within that range as a list of signature strings not including page counts
@@ -126,7 +134,11 @@ paths:
                 $ref: '#/components/schemas/SignatureStringSolution'
         '400':
           description: BAD REQUEST
-  /pages/{minPages}/{maxPages}:
+          content:
+            text/plain:
+              schema:
+                type: string
+  /string/pages/{minPages}/{maxPages}:
     get:
       summary: Retrieve signature set for the target range in string format including page counts
       description: For the given allowed values and range will produce all the available signature sets that produce a book with pages within that range as a list of signature strings including page counts
@@ -165,6 +177,10 @@ paths:
                 $ref: '#/components/schemas/SignatureStringSolution'
         '400':
           description: BAD REQUEST
+          content:
+            text/plain:
+              schema:
+                type: string
 components:
   schemas:
     SignatureListEntry:
