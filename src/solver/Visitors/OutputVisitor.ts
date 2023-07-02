@@ -1,37 +1,47 @@
 import Component from "../Composite/Component";
-import { toString } from "../SignatureKey";
-import SignatureObject from "../SignatureObject";
+import OutputSignatureList from "../Output/OutputSignatureList";
+import OutputConfig from "../OutputConfig";
+import SignatureKey, { toString } from "../SignatureKey";
+import pageCount from "../pageCount";
 import Visitor from "./Visitor";
 
-interface Output {
-  pages: number;
-}
-
-export interface OutputSignature extends Output {
-  key: SignatureObject;
-}
-
-export interface OutputString extends Output {
-  key: string;
-}
-
-export class OutputStringVisitor implements Visitor<OutputString> {
-  visit(c: Component): OutputString {
-    return { pages: c.pages, key: toString(c.value) };
+const createSignatureString = (
+  sk: SignatureKey,
+  includePageCount: boolean
+): string => {
+  const keyStr = toString(sk);
+  if (includePageCount) {
+    return keyStr.concat(`;${pageCount(sk)}`);
   }
-}
+  return keyStr;
+};
 
-export class OutputSignatureVisitor implements Visitor<OutputSignature> {
-  visit(c: Component): OutputSignature {
-    return {
-      pages: c.pages,
-      key: Array.from(c.value.entries()).reduce<SignatureObject>(
-        (acc, [k, v]) => {
-          acc[k] = v;
-          return acc;
-        },
-        {}
-      ),
-    };
+const createSignatureList = (
+  sk: SignatureKey,
+  includePageCount: boolean
+): OutputSignatureList => {
+  const out = {
+    signatures: Array.from(sk.entries()).map(([k, v]) => ({
+      size: k,
+      count: v,
+    })),
+  };
+  if (includePageCount) {
+    return { ...out, pages: pageCount(sk) };
+  }
+  return out;
+};
+
+export default class OutputVisitor
+  implements Visitor<string | OutputSignatureList>
+{
+  constructor(private readonly config: OutputConfig) {}
+  visit(c: Component): string | OutputSignatureList {
+    switch (this.config.format) {
+      case "string":
+        return createSignatureString(c.value, this.config.includePageCount);
+      case "json":
+        return createSignatureList(c.value, this.config.includePageCount);
+    }
   }
 }
