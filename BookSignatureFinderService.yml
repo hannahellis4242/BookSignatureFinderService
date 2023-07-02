@@ -11,8 +11,8 @@ servers:
 paths:
   /list/{minPages}/{maxPages}:
     get:
-      summary: Retrieve signature set for the target range
-      description: For the given allowed values and range will produce all the available signature sets that produce a book with pages within that range
+      summary: Retrieve signature set for the target range in json format not including page counts
+      description: For the given allowed values and range will produce all the available signature sets that produce a book with pages within that range as a list of json objects not including page numbers
       parameters:
         - name: sizes
           in: query
@@ -45,13 +45,52 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/SignatureList'
+                $ref: '#/components/schemas/SignatureListSolution'
+        '400':
+          description: BAD REQUEST
+  /list/pages/{minPages}/{maxPages}:
+    get:
+      summary: Retrieve signature set for the target range in json format including page counts
+      description: For the given allowed values and range will produce all the available signature sets that produce a book with pages within that range as a list of json objects including page numbers
+      parameters:
+        - name: sizes
+          in: query
+          description: list of allowed signature sizes
+          required: true
+          schema:
+            type: array
+            items:
+              type: integer
+              format: int64
+            minItems: 1
+        - name: min
+          in: path
+          description: minimum pages for book
+          required: true
+          schema:
+            type: integer
+            format: int64
+            minimum: 4
+        - name: max
+          in: path
+          description: maximum pages for book
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SignatureListSolution'
         '400':
           description: BAD REQUEST
   /{minPages}/{maxPages}:
     get:
-      summary: Retrieve signature set for the target range
-      description: For the given allowed values and range will produce all the available signature sets that produce a book with pages within that range
+      summary: Retrieve signature set for the target range in string format not including page counts
+      description: For the given allowed values and range will produce all the available signature sets that produce a book with pages within that range as a list of signature strings not including page counts
       parameters:
         - name: sizes
           in: query
@@ -84,7 +123,46 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/SignatureString'
+                $ref: '#/components/schemas/SignatureStringSolution'
+        '400':
+          description: BAD REQUEST
+  /pages/{minPages}/{maxPages}:
+    get:
+      summary: Retrieve signature set for the target range in string format including page counts
+      description: For the given allowed values and range will produce all the available signature sets that produce a book with pages within that range as a list of signature strings including page counts
+      parameters:
+        - name: sizes
+          in: query
+          description: list of allowed signature sizes
+          required: true
+          schema:
+            type: array
+            items:
+              type: integer
+              format: int64
+            minItems: 1
+        - name: min
+          in: path
+          description: minimum pages for book
+          required: true
+          schema:
+            type: integer
+            format: int64
+            minimum: 4
+        - name: max
+          in: path
+          description: maximum pages for book
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SignatureStringSolution'
         '400':
           description: BAD REQUEST
 components:
@@ -107,6 +185,14 @@ components:
             $ref: '#/components/schemas/SignatureListEntry'
         pages:
           type: integer
+    SignatureListSolution:
+      type: array
+      items:
+        $ref: '#/components/schemas/SignatureList'
     SignatureString:
       type: string
+    SignatureStringSolution:
+      type: array
+      items:
+        $ref: '#/components/schemas/SignatureString'
 
