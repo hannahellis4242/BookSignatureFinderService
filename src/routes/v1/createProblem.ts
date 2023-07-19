@@ -1,6 +1,6 @@
 import { Request } from "express";
 import { Either } from "typescript-monads";
-import Problem from "../solver/Problem";
+import Problem from "../../solver/Problem";
 
 const left = <L, R>(x: L) => new Either<L, R>(x, undefined);
 const right = <L, R>(x: R) => new Either<L, R>(undefined, x);

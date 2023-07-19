@@ -1,0 +1,130 @@
+openapi: 3.0.0
+info:
+  title: BookSiginatureFinderService
+  description: An API to generate all possible sets of signatures for the given range
+  version: 2.0.0
+
+servers:
+  - url: http://localhost:8080
+    description: localhost
+
+paths:
+  /v2:
+    post:
+      summary: Retrieve a solution key for the given problem
+      description: Will solve for the given parameters in the body and respond with a solution key
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Problem'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Key'
+        '400':
+          description: BAD REQUEST
+          content:
+            text/plain:
+              schema:
+                type: string
+        '500':
+          description: error
+          content:
+            text/plain:
+              schema:
+                type: string
+    get:
+      summary: Retrieve the solution for a given key
+      description: Will give the solution for the requested key
+      parameters:
+        - name: key
+          in: query
+          description: solution key to look for
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                oneOf:
+                  - $ref: '#/components/schemas/SignatureListSolution'
+                  - $ref: '#/components/schemas/SignatureStringSolution'
+        '400':
+          description: BAD REQUEST
+          content:
+            text/plain:
+              schema:
+                type: string
+        '404':
+          description: solution not found with given key
+    
+components:
+  schemas:
+    Key:
+      type: string
+    Problem:
+      type: object
+      properties:
+        minimum:
+          type: integer
+          format: int64
+          minimum: 4
+        maximum:
+          type: integer
+          format: int64
+        sizes:
+          type: array
+          items:
+            type: integer
+            format: int64
+          minItems: 1
+        format:
+          type: string
+          enum:
+            - json
+            - text
+        pageCount:
+          type: boolean
+      required:
+        - minimum
+        - maximum
+        - sizes
+        - format
+        - pageCount
+    SignatureListEntry:
+      type: object
+      properties:
+        size:
+          type: integer
+        count:
+          type: integer
+    SignatureList:
+      type: object
+      required:
+        - signatures
+      properties:
+        signatures:
+          type: array
+          items:
+            $ref: '#/components/schemas/SignatureListEntry'
+        pages:
+          type: integer
+    SignatureListSolution:
+      type: array
+      items:
+        $ref: '#/components/schemas/SignatureList'
+    SignatureString:
+      type: string
+    SignatureStringSolution:
+      type: array
+      items:
+        $ref: '#/components/schemas/SignatureString'
+
