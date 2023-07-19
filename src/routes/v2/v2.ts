@@ -9,7 +9,9 @@ import solve from "../../solver/solve";
 import { v4 } from "uuid";
 
 const v2 = Router();
-const client = createClient();
+const client = createClient({
+  url: "redis://redis:6379",
+});
 
 v2.post("/", async (req, res) => {
   const problemResult = createProblem(req.body);
