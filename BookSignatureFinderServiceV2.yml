@@ -65,6 +65,8 @@ paths:
                 type: string
         '404':
           description: solution not found with given key
+        '500':
+          description: internal server error
     
 components:
   schemas:

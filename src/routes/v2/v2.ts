@@ -46,3 +46,26 @@ v2.post("/", async (req, res) => {
     await client.disconnect();
   }
 });
+v2.get("/", async (req, res) => {
+  const { key } = req.query;
+  if (!key) {
+    res
+      .status(StatusCodes.BAD_REQUEST)
+      .send("expect a query parameter called key");
+    return;
+  }
+  try {
+    await client.connect();
+    const solution = await client.get(key.toString());
+    if (!solution) {
+      res.sendStatus(StatusCodes.NOT_FOUND);
+      return;
+    }
+    res.json(JSON.parse(solution));
+  } catch (e) {
+    res.sendStatus(StatusCodes.INTERNAL_SERVER_ERROR);
+  } finally {
+    client.disconnect();
+  }
+});
+export default v2;
