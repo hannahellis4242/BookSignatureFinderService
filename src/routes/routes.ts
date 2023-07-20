@@ -1,19 +1,19 @@
 import { Router } from "express";
-import { createClient, RedisClientType } from "redis";
-import createProblem from "../v2/createProblem";
+import { createClient } from "redis";
+import createProblem from "./createProblem";
 import { StatusCodes } from "http-status-codes";
 import createConfig from "./createConfig";
-import Problem from "../../solver/Problem";
-import OutputConfig from "../../solver/OutputConfig";
-import solve from "../../solver/solve";
+import Problem from "../solver/Problem";
+import OutputConfig from "../solver/OutputConfig";
+import solve from "../solver/solve";
 import { v4 } from "uuid";
 
-const v2 = Router();
+const routes = Router();
 const client = createClient({
   url: "redis://redis:6379",
 });
 
-v2.post("/", async (req, res) => {
+routes.post("/", async (req, res) => {
   const problemResult = createProblem(req.body);
   if (problemResult.isLeft()) {
     res
@@ -40,7 +40,7 @@ v2.post("/", async (req, res) => {
   try {
     await client.connect();
     const key = v4();
-    await client.set(key, JSON.stringify(solutions));
+    await client.set(key, JSON.stringify(solutions), { EX: 120 });
     res.send(key);
   } catch (e) {
     res.status(StatusCodes.INTERNAL_SERVER_ERROR).send(JSON.stringify(e));
@@ -48,7 +48,8 @@ v2.post("/", async (req, res) => {
     await client.disconnect();
   }
 });
-v2.get("/", async (req, res) => {
+
+routes.get("/", async (req, res) => {
   const { key } = req.query;
   if (!key) {
     res
@@ -70,4 +71,4 @@ v2.get("/", async (req, res) => {
     client.disconnect();
   }
 });
-export default v2;
+export default routes;

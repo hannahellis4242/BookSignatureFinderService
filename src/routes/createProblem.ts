@@ -1,5 +1,5 @@
 import { Either } from "typescript-monads";
-import Problem from "../../solver/Problem";
+import Problem from "../solver/Problem";
 import ProblemBody from "./ProblemBody";
 
 const left = <L, R>(x: L) => new Either<L, R>(x, undefined);

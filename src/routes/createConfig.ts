@@ -1,7 +1,7 @@
 import { Either } from "typescript-monads";
 import ProblemBody from "./ProblemBody";
-import OutputConfig from "../../solver/OutputConfig";
-import Format from "../../solver/Format";
+import OutputConfig from "../solver/OutputConfig";
+import Format from "../solver/Format";
 
 const left = <L, R>(x: L) => new Either<L, R>(x, undefined);
 const right = <L, R>(x: R) => new Either<L, R>(undefined, x);
