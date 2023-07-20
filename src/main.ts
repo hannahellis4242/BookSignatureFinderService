@@ -1,6 +1,7 @@
 import express, { json } from "express";
-import jsonRoutes from "./routes/jsonRoutes";
-import stringRoutes from "./routes/stringRoutes";
+import jsonRoutes from "./routes/v1/jsonRoutes";
+import stringRoutes from "./routes/v1/stringRoutes";
+import v2 from "./routes/v2/v2";
 import morgan from "morgan";
 
 const app = express();
@@ -9,6 +10,7 @@ app.use(json());
 
 app.use("/json", jsonRoutes);
 app.use("/string", stringRoutes);
+app.use("/v2", v2);
 
 const host: string = "0.0.0.0";
 const port: number = 8080;

@@ -2,7 +2,7 @@ import OutputConfig from "../src/solver/OutputConfig";
 import Problem from "../src/solver/Problem";
 import solve from "../src/solver/solve";
 describe("solve", () => {
-  const config: OutputConfig = { format: "string", includePageCount: true };
+  const config: OutputConfig = { format: "text", includePageCount: true };
   test("null problem", () => {
     const problem: Problem = { allowed: [], range: { min: 0, max: 0 } };
     const results = solve(problem)(config);

@@ -1,9 +1,9 @@
 import { RequestHandler } from "express";
-import OutputConfig from "../solver/OutputConfig";
+import OutputConfig from "../../solver/OutputConfig";
 import createProblem from "./createProblem";
 import { StatusCodes } from "http-status-codes";
-import Problem from "../solver/Problem";
-import solve from "../solver/solve";
+import Problem from "../../solver/Problem";
+import solve from "../../solver/solve";
 
 const handleSolutionRequest =
   (config: OutputConfig): RequestHandler =>

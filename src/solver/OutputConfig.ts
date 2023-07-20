@@ -1,6 +1,6 @@
-export type SignatureOutputFormat = "json" | "string";
+import Format from "./Format";
 
 export default interface OutputConfig {
-  format: SignatureOutputFormat;
+  format: Format;
   includePageCount: boolean;
 }

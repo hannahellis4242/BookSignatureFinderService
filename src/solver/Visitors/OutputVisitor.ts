@@ -38,7 +38,7 @@ export default class OutputVisitor
   constructor(private readonly config: OutputConfig) {}
   visit(c: Component): string | OutputSignatureList {
     switch (this.config.format) {
-      case "string":
+      case "text":
         return createSignatureString(c.value, this.config.includePageCount);
       case "json":
         return createSignatureList(c.value, this.config.includePageCount);
