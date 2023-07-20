@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { createClient, RedisClientType } from "redis";
+import { createClient } from "redis";
 import createProblem from "./createProblem";
 import { StatusCodes } from "http-status-codes";
 import createConfig from "./createConfig";
@@ -40,7 +40,7 @@ routes.post("/", async (req, res) => {
   try {
     await client.connect();
     const key = v4();
-    await client.set(key, JSON.stringify(solutions));
+    await client.set(key, JSON.stringify(solutions), { EX: 120 });
     res.send(key);
   } catch (e) {
     res.status(StatusCodes.INTERNAL_SERVER_ERROR).send(JSON.stringify(e));
