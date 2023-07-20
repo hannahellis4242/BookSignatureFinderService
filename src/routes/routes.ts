@@ -1,11 +1,11 @@
 import { Router } from "express";
 import { createClient, RedisClientType } from "redis";
-import createProblem from "../v2/createProblem";
+import createProblem from "./createProblem";
 import { StatusCodes } from "http-status-codes";
 import createConfig from "./createConfig";
-import Problem from "../../solver/Problem";
-import OutputConfig from "../../solver/OutputConfig";
-import solve from "../../solver/solve";
+import Problem from "../solver/Problem";
+import OutputConfig from "../solver/OutputConfig";
+import solve from "../solver/solve";
 import { v4 } from "uuid";
 
 const routes = Router();
