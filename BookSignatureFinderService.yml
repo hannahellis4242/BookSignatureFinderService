@@ -2,187 +2,105 @@ openapi: 3.0.0
 info:
   title: BookSiginatureFinderService
   description: An API to generate all possible sets of signatures for the given range
-  version: 1.0.0
+  version: 2.0.0
 
 servers:
   - url: http://localhost:8080
     description: localhost
 
 paths:
-  /json/{minPages}/{maxPages}:
-    get:
-      summary: Retrieve signature set for the target range in json format not including page counts
-      description: For the given allowed values and range will produce all the available signature sets that produce a book with pages within that range as a list of json objects not including page numbers
-      parameters:
-        - name: sizes
-          in: query
-          description: list of allowed signature sizes
-          required: true
-          schema:
-            type: array
-            items:
-              type: integer
-              format: int64
-            minItems: 1
-        - name: min
-          in: path
-          description: minimum pages for book
-          required: true
-          schema:
-            type: integer
-            format: int64
-            minimum: 4
-        - name: max
-          in: path
-          description: maximum pages for book
-          required: true
-          schema:
-            type: integer
-            format: int64
+  /:
+    post:
+      summary: Retrieve a solution key for the given problem
+      description: Will solve for the given parameters in the body and respond with a solution key
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Problem'
       responses:
         '200':
           description: OK
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/SignatureListSolution'
+                $ref: '#/components/schemas/Key'
         '400':
           description: BAD REQUEST
           content:
             text/plain:
               schema:
                 type: string
-  /json/pages/{minPages}/{maxPages}:
+        '500':
+          description: error
+          content:
+            text/plain:
+              schema:
+                type: string
     get:
-      summary: Retrieve signature set for the target range in json format including page counts
-      description: For the given allowed values and range will produce all the available signature sets that produce a book with pages within that range as a list of json objects including page numbers
+      summary: Retrieve the solution for a given key
+      description: Will give the solution for the requested key
       parameters:
-        - name: sizes
+        - name: key
           in: query
-          description: list of allowed signature sizes
+          description: solution key to look for
           required: true
           schema:
-            type: array
-            items:
-              type: integer
-              format: int64
-            minItems: 1
-        - name: min
-          in: path
-          description: minimum pages for book
-          required: true
-          schema:
-            type: integer
-            format: int64
-            minimum: 4
-        - name: max
-          in: path
-          description: maximum pages for book
-          required: true
-          schema:
-            type: integer
-            format: int64
+            type: string
       responses:
         '200':
           description: OK
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/SignatureListSolution'
+                oneOf:
+                  - $ref: '#/components/schemas/SignatureListSolution'
+                  - $ref: '#/components/schemas/SignatureStringSolution'
         '400':
           description: BAD REQUEST
           content:
             text/plain:
               schema:
                 type: string
-  /string/{minPages}/{maxPages}:
-    get:
-      summary: Retrieve signature set for the target range in string format not including page counts
-      description: For the given allowed values and range will produce all the available signature sets that produce a book with pages within that range as a list of signature strings not including page counts
-      parameters:
-        - name: sizes
-          in: query
-          description: list of allowed signature sizes
-          required: true
-          schema:
-            type: array
-            items:
-              type: integer
-              format: int64
-            minItems: 1
-        - name: min
-          in: path
-          description: minimum pages for book
-          required: true
-          schema:
-            type: integer
-            format: int64
-            minimum: 4
-        - name: max
-          in: path
-          description: maximum pages for book
-          required: true
-          schema:
-            type: integer
-            format: int64
-      responses:
-        '200':
-          description: OK
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/SignatureStringSolution'
-        '400':
-          description: BAD REQUEST
-          content:
-            text/plain:
-              schema:
-                type: string
-  /string/pages/{minPages}/{maxPages}:
-    get:
-      summary: Retrieve signature set for the target range in string format including page counts
-      description: For the given allowed values and range will produce all the available signature sets that produce a book with pages within that range as a list of signature strings including page counts
-      parameters:
-        - name: sizes
-          in: query
-          description: list of allowed signature sizes
-          required: true
-          schema:
-            type: array
-            items:
-              type: integer
-              format: int64
-            minItems: 1
-        - name: min
-          in: path
-          description: minimum pages for book
-          required: true
-          schema:
-            type: integer
-            format: int64
-            minimum: 4
-        - name: max
-          in: path
-          description: maximum pages for book
-          required: true
-          schema:
-            type: integer
-            format: int64
-      responses:
-        '200':
-          description: OK
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/SignatureStringSolution'
-        '400':
-          description: BAD REQUEST
-          content:
-            text/plain:
-              schema:
-                type: string
+        '404':
+          description: solution not found with given key
+        '500':
+          description: internal server error
+    
 components:
   schemas:
+    Key:
+      type: string
+    Problem:
+      type: object
+      properties:
+        minimum:
+          type: integer
+          format: int64
+          minimum: 4
+        maximum:
+          type: integer
+          format: int64
+        sizes:
+          type: array
+          items:
+            type: integer
+            format: int64
+          minItems: 1
+        format:
+          type: string
+          enum:
+            - json
+            - text
+        pageCount:
+          type: boolean
+      required:
+        - minimum
+        - maximum
+        - sizes
+        - format
+        - pageCount
     SignatureListEntry:
       type: object
       properties:

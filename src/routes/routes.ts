@@ -8,12 +8,12 @@ import OutputConfig from "../../solver/OutputConfig";
 import solve from "../../solver/solve";
 import { v4 } from "uuid";
 
-const v2 = Router();
+const routes = Router();
 const client = createClient({
   url: "redis://redis:6379",
 });
 
-v2.post("/", async (req, res) => {
+routes.post("/", async (req, res) => {
   const problemResult = createProblem(req.body);
   if (problemResult.isLeft()) {
     res
@@ -48,7 +48,8 @@ v2.post("/", async (req, res) => {
     await client.disconnect();
   }
 });
-v2.get("/", async (req, res) => {
+
+routes.get("/", async (req, res) => {
   const { key } = req.query;
   if (!key) {
     res
@@ -70,4 +71,4 @@ v2.get("/", async (req, res) => {
     client.disconnect();
   }
 });
-export default v2;
+export default routes;
