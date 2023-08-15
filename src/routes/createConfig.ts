@@ -28,7 +28,7 @@ const createConfig = (
   if (!formatValue) {
     return left('format can either be "text" or "json"');
   }
-  if (!pageCount) {
+  if (pageCount === undefined) {
     return left("must specify if a page count is required or not");
   }
   return right({ format: formatValue, includePageCount: pageCount });
