@@ -103,6 +103,9 @@ components:
         - pageCount
     SignatureListEntry:
       type: object
+      required:
+        - size
+        - count
       properties:
         size:
           type: integer
